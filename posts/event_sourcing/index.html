@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  As a fish out of water: Implementing event sourcing for land based fish farming · Karls blog
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Karl Svantorp">
+<meta name="description" content="
+  As a fish out of water: Implementing event sourcing for land based fish farming
+  
+    
+    Link to heading
+  
+
+I’m a developer at a company that specializes in designing and constructing land-based fish farming facilities. Complementary to this, we develop the software systems that enable our customers to operate these complex environments with optimal efficiency.
+Why Land-Based Fish Farming Needs Specialized Software
+Land-based aquaculture operates under distinct constraints compared to traditional sea-based farming, particularly concerning physical space. This necessitates highly precise planning, logistics, and operational monitoring to ensure viability. Observing the existing software landscape, we identified a need for tools specifically tailored to the challenges of land-based systems, especially regarding robust data management and maintaining historical accuracy over time.">
+<meta name="keywords" content="blog,developer,personal">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="As a fish out of water: Implementing event sourcing for land based fish farming">
+  <meta name="twitter:description" content="As a fish out of water: Implementing event sourcing for land based fish farming Link to heading I’m a developer at a company that specializes in designing and constructing land-based fish farming facilities. Complementary to this, we develop the software systems that enable our customers to operate these complex environments with optimal efficiency.
+Why Land-Based Fish Farming Needs Specialized Software
+Land-based aquaculture operates under distinct constraints compared to traditional sea-based farming, particularly concerning physical space. This necessitates highly precise planning, logistics, and operational monitoring to ensure viability. Observing the existing software landscape, we identified a need for tools specifically tailored to the challenges of land-based systems, especially regarding robust data management and maintaining historical accuracy over time.">
+
+<meta property="og:url" content="http://localhost:1313/posts/event_sourcing/">
+  <meta property="og:site_name" content="Karls blog">
+  <meta property="og:title" content="As a fish out of water: Implementing event sourcing for land based fish farming">
+  <meta property="og:description" content="As a fish out of water: Implementing event sourcing for land based fish farming Link to heading I’m a developer at a company that specializes in designing and constructing land-based fish farming facilities. Complementary to this, we develop the software systems that enable our customers to operate these complex environments with optimal efficiency.
+Why Land-Based Fish Farming Needs Specialized Software
+Land-based aquaculture operates under distinct constraints compared to traditional sea-based farming, particularly concerning physical space. This necessitates highly precise planning, logistics, and operational monitoring to ensure viability. Observing the existing software landscape, we identified a need for tools specifically tailored to the challenges of land-based systems, especially regarding robust data management and maintaining historical accuracy over time.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-05-08T12:05:53+02:00">
+    <meta property="article:modified_time" content="2025-05-08T12:05:53+02:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/event_sourcing/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Karls blog
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/event_sourcing/">
+              As a fish out of water: Implementing event sourcing for land based fish farming
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2025-05-08T12:05:53&#43;02:00">
+                May 8, 2025
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              9-minute read
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div class="post-content">
+        
+        <h2 id="as-a-fish-out-of-water-implementing-event-sourcing-for-land-based-fish-farming">
+  As a fish out of water: Implementing event sourcing for land based fish farming
+  <a class="heading-link" href="#as-a-fish-out-of-water-implementing-event-sourcing-for-land-based-fish-farming">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>I’m a developer at a company that specializes in designing and constructing land-based fish farming facilities. Complementary to this, we develop the software systems that enable our customers to operate these complex environments with optimal efficiency.</p>
+<p><strong>Why Land-Based Fish Farming Needs Specialized Software</strong></p>
+<p>Land-based aquaculture operates under distinct constraints compared to traditional sea-based farming, particularly concerning physical space. This necessitates highly precise planning, logistics, and operational monitoring to ensure viability. Observing the existing software landscape, we identified a need for tools specifically tailored to the challenges of land-based systems, especially regarding robust data management and maintaining historical accuracy over time.</p>
+<p><strong>Real-World Data Entry Challenges</strong></p>
+<p>One of our applications assists farmers with recording essential daily data – fish mortality, sample weights, water quality parameters, and more. The operational environment of a fish farm presents inherent difficulties for data entry. Users may be dealing with equipment or animals while interacting with mobile devices, increasing the likelihood of errors. Furthermore, immediate data entry isn&rsquo;t always feasible; registrations might be postponed due to more urgent tasks and entered days later, potentially out of chronological sequence with other records. The software needed flexibility to accommodate these realities without burdening the user. Each type of registration had specific frontend implementation to accomodate some of the practical challenges, and features like offline draft saving helped mitigate interruptions.</p>
+<p>Our initial focus was on reliable data capture. However, a critical operational requirement soon became apparent: how should the system handle registrations that are later found to be incorrect or need to be logically retracted? Our early system design, centered on logging incoming data, lacked a mechanism for corrections or retractions that didn&rsquo;t compromise the integrity of the historical record. Simply overwriting existing data would erase the context of the original entry, while deletion would remove the record entirely, hindering accurate auditing and reporting. If you need to account for wrongful registrations, you should also account for wrongful deletion, to a degree. We needed a method to reflect corrections while preserving the complete sequence of events.</p>
+<p><strong>Why CRUD Falls Short for Auditable Systems</strong></p>
+<p>The conventional database approach using CRUD operations proved inadequate for our requirements, particularly where historical accuracy and auditability are critical.</p>
+<ul>
+<li><strong>Loss of Historical Context:</strong> Standard <code>UPDATE</code> operations overwrite previous data states, and <code>DELETE</code> operations remove records permanently. This eliminates the ability to trace the history of data changes or understand the state progression over time.</li>
+<li><strong>Difficulty Reconstructing Past States:</strong> Without a preserved sequence of changes, accurately calculating the system&rsquo;s state at a specific point in the past becomes complex and error-prone, especially when dealing with back-dated entries and corrections.</li>
+<li><strong>Inadequate Audit Trails:</strong> Basic CRUD operations do not inherently capture the metadata associated with a change, such as the reason for correction or the original value, which are often necessary for compliance and process analysis.</li>
+</ul>
+<p>This table summarizes the limitations we faced:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Challenge</th>
+          <th style="text-align: left">CRUD Approach Limitation</th>
+          <th style="text-align: left">Event Sourcing Solution</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Data Correction</td>
+          <td style="text-align: left">Overwrites history</td>
+          <td style="text-align: left">Immutable correction events</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Delayed Registration</td>
+          <td style="text-align: left">Hard to insert chronologically</td>
+          <td style="text-align: left">Events placed by actual occurrence time</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Audit &amp; Compliance</td>
+          <td style="text-align: left">No reliable, built-in history</td>
+          <td style="text-align: left">Full, append-only event log</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Accurate Reporting</td>
+          <td style="text-align: left">Risk of inaccurate historical data</td>
+          <td style="text-align: left">Replay events for any date</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Logical Deletions</td>
+          <td style="text-align: left">Permanent removal</td>
+          <td style="text-align: left">Specific &ldquo;retraction&rdquo; events</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>How Event Sourcing Solves These Problems</strong></p>
+<p>These limitations guided us toward exploring <strong>Event Sourcing</strong>. This pattern shifts the focus from storing the current state to storing a complete, chronological sequence of immutable <strong>events</strong> that describe every state change.</p>
+<ul>
+<li><strong>Events as Immutable Facts:</strong> Each registration, modification, or logical deletion is recorded as a distinct, unchangeable event record (e.g., <code>FishCountRegistered</code>, <code>RegistrationCorrected</code>, <code>MortalityEntryRetracted</code>). Corrections involve appending <em>new</em> events that reference the original.</li>
+<li><strong>The Append-Only Event Store:</strong> Events are added chronologically to an event store. Existing events are never modified or deleted, providing an inherent and reliable audit trail.</li>
+<li><strong>State Reconstruction:</strong> The state of any entity at any point in time is determined by replaying the relevant sequence of events from the store. To calculate the state for a specific past date, events are replayed up to that point.</li>
+<li><strong>Snapshots for Optimization:</strong> Replaying a very long event history can become computationally expensive. A common optimization pattern is <strong>snapshotting</strong>, where the derived state of an entity is periodically saved. To reconstruct the state, the system loads the most recent snapshot and replays only the events that occurred <em>after</em> that snapshot, significantly improving performance.</li>
+<li><strong>Projections for Queries:</strong> To efficiently serve read requests, background processes (event handlers) listen to the event stream and update separate read-optimized data models, often called <strong>projections</strong> or materialized views.</li>
+</ul>
+<p>Event sourcing appeared well-suited to our requirements, directly addressing the need for auditability, corrections, and accurate historical state calculation. We recognized potential trade-offs, including increased storage consumption compared to state-based storage, the need for careful management of event schema evolution (&ldquo;versioning&rdquo;), and the development effort required for the replay and projection logic.</p>
+<p><img src="/images/user-event-flow.png" alt="targets"></p>
+<p><strong>Implementation in Practice: Our Approach</strong></p>
+<p>Leveraging our existing microservices architecture allowed us to introduce a dedicated &ldquo;Event Replay Service&rdquo; without a major system overhaul.</p>
+<ol>
+<li>
+<p><strong>Our Implementation: Relational Event Store:</strong> While NoSQL databases are common for event stores due to schema flexibility, we chose to utilize our existing relational (SQL) database infrastructure. We were already showing the user a complete log of registrations, so we had a table in our db with a simple generic event model that placed all registration along one single time-column, which is perhaps the most important part of the event log. This event log was linked to from specific tables holding the detailed payloads for different event types. We kept this approach to avoid a complete rewrite of multiple services,  though it requires disciplined schema management for event structures. To support new types of registrations we had also begun work on a more generic event model that could more dynamically define what metrics to hold, which I believe will come in handy so we avoid constantly changing the core event model.</p>
+</li>
+<li>
+<p><strong>Event Replay Service &amp; Snapshot Utilization:</strong> This service consumes new events, ensures correct chronological processing, executes the associated business logic (including handling correction and retraction events), and updates the base tables that feed our read models. In order to avoid replaying events from zero each time, we integrated this with our pre-existing daily state snapshots, originally generated for reporting. When recalculating state due to a new event, the Replay Service loads the relevant snapshot from the end of the <em>previous day</em> and replays only the events that occurred <em>since</em> that snapshot. This reuse significantly optimizes recalculation time, making the process efficient even with growing histories. The service subsequently updates relevant future snapshots.</p>
+</li>
+<li>
+<p><strong>Improved Testability:</strong> A lot of the domain logic surrounding the registrations were building up in our API that was receiving them, and it was being implemented a little bit ad-hoc on a case by case basis. It wasn&rsquo;t particularly testable, but it was obvious that a lot of code could be generalized around the core event model, and from there it should be possible to abstract away the domain logic in a generalized way. So the new event service was a pretty big downpayment on technical debt that was building up, we now have unit tests both on the common state-update logic, and on the specific domain logic that now presents a common interface.</p>
+</li>
+<li>
+<p><strong>Event Queue (Azure Storage Queues Initially):</strong> We employ Azure Storage Queues for asynchronous notification between event persistence and the Replay Service. We had a storage account from before so it was a quick way to get a queue up and running, but I think we could benefit from something with either a better push-interface to simplify the queue-client code compared to frequent polling, or something that can handle more volume. Although that would primarily be to support a completely separate sensor data-pipeline.</p>
+</li>
+<li>
+<p><strong>Projections via SQL Views:</strong> We implemented read models using standard SQL Views over the base registration tables. This leverages our existing database capabilities effectively for current query requirements and simplifies the infrastructure compared to managing separate read stores.</p>
+<p><img src="/images/event-state-flow.png" alt="targets"></p>
+</li>
+<li>
+<p><strong>Relation to CQRS:</strong> While not an explicit goal, adopting event sourcing resulted in a degree of Command Query Responsibility Segregation (CQRS). The &ldquo;command&rdquo; side handles incoming actions and persists events. The &ldquo;query&rdquo; side involves the Event Replay Service updating projections (base tables/views) optimized for reading. This logical separation exists without the complexity of fully separate read/write models or databases. This meets our current needs, although a more formal CQRS implementation might be considered if future query complexity increases significantly.</p>
+</li>
+</ol>
+<p><strong>Lessons Learned and Next Steps</strong></p>
+<p>Transitioning to an event-sourcing-based model has substantially improved our data management capabilities.</p>
+<ul>
+<li><strong>Key Benefits Realized:</strong>
+<ul>
+<li><strong>Complete Auditability:</strong> Provides a full, immutable history.</li>
+<li><strong>Robust Data Correction:</strong> Handles errors and retractions gracefully.</li>
+<li><strong>Accurate Historical State:</strong> Enables precise point-in-time reporting.</li>
+<li><strong>Centralized Business Logic:</strong> Reduced API complexity and technical debt.</li>
+<li><strong>Enhanced Testability:</strong> Increased confidence through focused unit testing.</li>
+</ul>
+</li>
+</ul>
+<p>Our implementation, using a relational store and existing daily snapshots, represents a pragmatic adaptation that effectively solved our specific challenges. However, development is an ongoing process.</p>
+<ul>
+<li><strong>Next Steps and Future Considerations:</strong>
+<ul>
+<li><strong>Event Queue Evolution:</strong> We plan to evaluate migrating from Azure Storage Queues. <strong>Azure Event Hub</strong> is a candidate for handling potentially higher event volumes.<strong>Azure Service Bus</strong> offers richer features like advanced dead-lettering and potentially easier duplicate detection, which could simplify consumer logic. The choice will depend on evolving throughput and feature requirements.</li>
+<li><strong>Snapshot Strategy Refinement:</strong> While daily snapshots work well now, we may need to refine this. This could involve adjusting the frequency or storing
+more data in each snapshot, because now its really minimal as required by reporting.</li>
+<li><strong>Projection Optimization:</strong> If read performance degrades due to complex queries or high load, we may need to optimize projections further, potentially introducing dedicated, denormalized read models (moving closer to a formal CQRS architecture).</li>
+<li><strong>Error handling:</strong> Handling errors in the pipeline is still not where it needs to be for us to be completely confident. What happens if the queue trigger payload cannot be read/serialized, do we delete it from the queue? Presumably, it was put there by a real event happening, do we need to alert someone to manually resolve the issue, so we don&rsquo;t miss an update?</li>
+</ul>
+</li>
+</ul>
+<p>This architectural shift has provided a solid foundation for managing complex operational data in land-based aquaculture, enabling both accurate historical perspective and robust handling of real-world data challenges.</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script>
+  window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    
+    document.addEventListener('themeChanged', function (e) { 
+        if (document.readyState == 'complete') {
+          DISQUS.reset({ reload: true, config: disqus_config });
+        }
+    });
+</script>
+        
+        
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+    2025
+     Karl Svantorp 
+    ·
+    
+    Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
