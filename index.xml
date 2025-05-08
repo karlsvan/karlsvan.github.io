@@ -6,7 +6,14 @@
     <description>Recent content on Karls blog</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate></lastBuildDate>
+    <lastBuildDate>Thu, 08 May 2025 12:05:53 +0200</lastBuildDate>
     <atom:link href="https://blog.svantorp.no/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>As a fish out of water: Implementing event sourcing for land based fish farming</title>
+      <link>https://blog.svantorp.no/posts/event_sourcing/</link>
+      <pubDate>Thu, 08 May 2025 12:05:53 +0200</pubDate>
+      <guid>https://blog.svantorp.no/posts/event_sourcing/</guid>
+      <description>&lt;h2 id=&#34;as-a-fish-out-of-water-implementing-event-sourcing-for-land-based-fish-farming&#34;&gt;&#xA;  As a fish out of water: Implementing event sourcing for land based fish farming&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#as-a-fish-out-of-water-implementing-event-sourcing-for-land-based-fish-farming&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;I’m a developer at a company that specializes in designing and constructing land-based fish farming facilities. Complementary to this, we develop the software systems that enable our customers to operate these complex environments with optimal efficiency.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Why Land-Based Fish Farming Needs Specialized Software&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;Land-based aquaculture operates under distinct constraints compared to traditional sea-based farming, particularly concerning physical space. This necessitates highly precise planning, logistics, and operational monitoring to ensure viability. Observing the existing software landscape, we identified a need for tools specifically tailored to the challenges of land-based systems, especially regarding robust data management and maintaining historical accuracy over time.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>
